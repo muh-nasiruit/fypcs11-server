@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 
 // connection.end((error) => {
@@ -11,7 +12,9 @@ const port = process.env.PORT || 4000;
 
 // const server = http.createServer(app);
 app.use(cors());
-app.get('/login', (req, res) => {
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
     const connection = mysql.createConnection({
         host: 'localhost',
@@ -42,6 +45,15 @@ app.get('/login', (req, res) => {
         });
     });
 })
+
+app.post('/api/signup', function (req, res) {
+  const data = req.body;
+  console.log('user details: ', data);
+
+
+  return res.send('Api Successful');
+});
+
 
 app.listen(port, () => {
   console.log(`App started on port: ${port}`)
