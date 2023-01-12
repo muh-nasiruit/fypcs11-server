@@ -14,6 +14,21 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'password',
+        database: 'user_test',
+        insecureAuth : true,
+      });
+      
+      connection.connect((error) => {
+        if(error) {
+          console.log('Error connecting: ' + error.message);
+          return;
+      }
+      console.log('Connection established sucessfully');
+      });
 app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
     const connection = mysql.createConnection({
