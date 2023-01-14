@@ -44,6 +44,7 @@ app.get('/api/login', (req, res) => {
 //           res.send(dbRes);
 //         });
 //     });
+    console.log("this api works you are just insecure")
        res.send("HELLO WORLD");
 })
 
