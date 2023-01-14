@@ -16,20 +16,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
-//     const connection = mysql.createConnection({
-//         host: 'localhost',
-//         user: 'root',
-//         password: 'password',
-//         database: 'user_test',
-//         insecureAuth : true,
-//       });
+    const connection = mysql.createConnection({
+        host: '172.104.174.187',
+        user: 'root',
+        password: 'Adminadmin@8910',
+        database: 'user_test',
+      });
       
-//       connection.connect((error) => {
-//         if(error) {
-//           console.log('Error connecting: ' + error.message);
-//           return;
-//       }
-//       console.log('Connection established sucessfully');
+      connection.connect((error) => {
+        if(error) {
+          console.log('Error connecting: ' + error.message);
+          return;
+      }
+      console.log('Connection established sucessfully'); });
 //       connection.query("SELECT * from users", function (err, result) {
 //           if (err) {
 //               console.log('Error on query: ' + err.message);
