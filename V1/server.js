@@ -21,6 +21,7 @@ app.get('/api/login', (req, res) => {
         user: 'root',
         password: 'Adminadmin@8910',
         database: 'user_test',
+        port: '3306',
       });
       
       connection.connect((error) => {
