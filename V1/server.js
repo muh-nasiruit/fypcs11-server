@@ -19,13 +19,13 @@ app.get('/api/login', (req, res) => {
     const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  database: 'users'
+  database: 'users',
+        _socket: '/var/run/mysqld/mysqld.sock',
 });
       
       connection.connect((error) => {
         if(error) {
           console.log('Error connecting: ' + error.message);
-          res.send("PROBLEM DETECTED");
           return;
       }
       console.log('Connection established sucessfully'); 
