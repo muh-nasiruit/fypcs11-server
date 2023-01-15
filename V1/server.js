@@ -38,11 +38,11 @@ app.get('/api/login', (req, res) => {
           }
           console.log("Query Successful");
           console.log(result);
-//           const dbRes = { 
-//             username: result[0].username,
-//             password: result[0].password,
-//         };
-          res.send('Logged Result');
+          const dbRes = { 
+            username: result[0].confirm_pass,
+            password: result[0].password,
+        };
+          res.send(dbRes);
         });
 //     console.log("this api works you are just insecure")
 //        res.send("HELLO WORLD");
