@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
-    const connection = mysql.createConnection({
+    const connection = mysql.createPool({
         host: 'localhost',
         user: 'root',
         database: 'user_test',
