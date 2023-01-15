@@ -17,10 +17,11 @@ app.use(bodyParser.json());
 app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
     const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  database: 'users',
-        _socket: '/var/run/mysqld/mysqld.sock',
+          user: 'root',
+          host: 'localhost',
+          password: '',
+          database: 'users',
+          _socket: '/var/run/mysqld/mysqld.sock',
 });
       
       connection.connect((error) => {
