@@ -19,10 +19,7 @@ app.get('/api/login', (req, res) => {
     const connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: 'Adminadmin@8910',
         database: 'user_test',
-        port: '3306',
-        _socket: '/var/run/mysqld/mysqld.sock',
       });
       
       connection.connect((error) => {
