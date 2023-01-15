@@ -22,25 +22,26 @@ app.get('/api/login', (req, res) => {
         database: 'user_test',
       });
       
-      connection.connect((error) => {
+      connection.getConnection((error) => {
         if(error) {
           console.log('Error connecting: ' + error.message);
           return;
       }
-      console.log('Connection established sucessfully'); });
-      connection.query("SELECT * from users", function (err, result) {
-          if (err) {
-              console.log('Error on query: ' + err.message);
-              return;
-          }
-          console.log("Query Successful");
-          console.log(result);
-          const dbRes = { 
-            username: result[0].username,
-            password: result[0].password,
-        };
-          res.send(dbRes);
-        });
+      console.log('Connection established sucessfully'); 
+      });
+//       connection.query("SELECT * from users", function (err, result) {
+//           if (err) {
+//               console.log('Error on query: ' + err.message);
+//               return;
+//           }
+//           console.log("Query Successful");
+//           console.log(result);
+//           const dbRes = { 
+//             username: result[0].username,
+//             password: result[0].password,
+//         };
+//           res.send(dbRes);
+//         });
     console.log("this api works you are just insecure")
        res.send("HELLO WORLD");
 })
