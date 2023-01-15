@@ -29,15 +29,15 @@ app.get('/api/login', (req, res) => {
           console.log('Error connecting: ' + error.message);
           return;
       }
-      console.log('Connection established sucessfully'); 
+      console.log('Connection: Established sucessfully'); 
       });
       connection.query("SELECT * from users", function (err, result) {
           if (err) {
               console.log('Error on query: ' + err.message);
               return;
           }
-          console.log("Query Successful");
-          console.log(result);
+          console.log("Query: Successful");
+          console.log('Data retrieved: ' + result);
           const dbRes = { 
             username: result[0].confirm_pass,
             password: result[0].password,
