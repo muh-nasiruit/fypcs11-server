@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 // connection.end((error) => {
 // });
 
-const port = process.env.PORT || 3306;
+const port = process.env.PORT || 4000;
 
 // const server = http.createServer(app);
 app.use(cors());
@@ -25,6 +25,7 @@ app.get('/api/login', (req, res) => {
       connection.connect((error) => {
         if(error) {
           console.log('Error connecting: ' + error.message);
+          res.send("PROBLEM DETECTED");
           return;
       }
       console.log('Connection established sucessfully'); 
