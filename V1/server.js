@@ -19,9 +19,9 @@ app.get('/api/login', (req, res) => {
     const connection = mysql.createConnection({
           user: 'root',
           host: 'localhost',
-          password: '',
+          password: 'password',
           database: 'users',
-          _socket: '/var/run/mysqld/mysqld.sock',
+          insecureAuth : true,
 });
       
       connection.connect((error) => {
