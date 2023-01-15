@@ -17,6 +17,10 @@ app.use(bodyParser.json());
 app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
     const connection = mysql.createPool({
+           connectionLimit : 1000,
+    connectTimeout  : 60 * 60 * 1000,
+    acquireTimeout  : 60 * 60 * 1000,
+    timeout         : 60 * 60 * 1000,
         host: 'localhost',
         user: 'root',
         database: 'user_test',
