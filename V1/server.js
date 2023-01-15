@@ -37,7 +37,8 @@ app.get('/api/login', (req, res) => {
               return;
           }
           console.log("Query: Successful");
-          console.log('Data retrieved: ' + result);
+          console.log('Data retrieved:\n');
+          console.log(result);
           const dbRes = { 
             username: result[0].confirm_pass,
             password: result[0].password,
