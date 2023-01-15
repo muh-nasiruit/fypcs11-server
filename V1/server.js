@@ -16,14 +16,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
-    const connection = mysql.createPool({
-           connectionLimit : 1000,
-        host: 'localhost',
-        user: 'root',
-        database: 'user_test',
-      });
+    const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  database: 'users'
+});
       
-      connection.getConnection((error) => {
+      connection.connect((error) => {
         if(error) {
           console.log('Error connecting: ' + error.message);
           return;
