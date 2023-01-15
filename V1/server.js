@@ -53,8 +53,9 @@ app.post('/api/signup', function (req, res) {
   const data = req.body;
   console.log('user details: ', data);
 
-
-  return res.send('Api Successful');
+  return res.send(`Api Successful. 
+  user: ${data.userName},
+  pass: ${data.passWord}`);
 });
 
 
