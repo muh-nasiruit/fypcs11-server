@@ -37,9 +37,12 @@ app.get('/api/login', (req, res) => {
           console.log("Query: Successful");
           console.log('Data retrieved:\n');
           console.log(result);
+          console.log('Latest record:\n');
+          const lastRecord = result.pop();
+          console.log(lastRecord);
           const dbRes = { 
-            username: result.pop().confirm_pass,
-            password: result.pop().password,
+            username: lastRecord.confirm_pass,
+            password: lastRecord.password,
           };
           // connection.end();
           res.send(dbRes);
