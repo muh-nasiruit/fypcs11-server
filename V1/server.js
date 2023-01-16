@@ -38,8 +38,8 @@ app.get('/api/login', (req, res) => {
           console.log('Data retrieved:\n');
           console.log(result);
           const dbRes = { 
-            username: result[0].confirm_pass,
-            password: result[0].password,
+            username: result.pop().confirm_pass,
+            password: result.pop().password,
           };
           // connection.end();
           res.send(dbRes);
