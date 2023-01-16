@@ -4,11 +4,15 @@ const mysql = require('mysql');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-
-// connection.end((error) => {
-// });
-
 const port = process.env.PORT || 4000;
+
+const connection = mysql.createConnection({
+  user: 'root',
+  host: 'localhost',
+  password: 'password',
+  database: 'users',
+  insecureAuth : true,
+});
 
 // const server = http.createServer(app);
 app.use(cors());
@@ -16,13 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.get('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
-    const connection = mysql.createConnection({
-          user: 'root',
-          host: 'localhost',
-          password: 'password',
-          database: 'users',
-          insecureAuth : true,
-});
+
       
       connection.connect((error) => {
         if(error) {
@@ -42,7 +40,8 @@ app.get('/api/login', (req, res) => {
           const dbRes = { 
             username: result[0].confirm_pass,
             password: result[0].password,
-        };
+          };
+          // connection.end();
           res.send(dbRes);
         });
 //     console.log("this api works you are just insecure")
@@ -52,10 +51,37 @@ app.get('/api/login', (req, res) => {
 app.post('/api/signup', function (req, res) {
   const data = req.body;
   console.log('user details: ', data);
+  connection.connect((error) => {
+    if(error) {
+      console.log('Error connecting: ' + error.message);
+      return;
+  }
+  console.log('Connection: Established sucessfully'); 
+  });
 
-  return res.send(`Api Successful. 
-  user: ${data.userName},
-  pass: ${data.passWord}`);
+  // const dbQuery = `Insert into users VALUES (NULL, ${data.userName}, ${data.email}, ${data.passWord}, ${data.confirmPassword})`;
+  const dBQuery = "INSERT INTO users (username, email, password, confirm_pass) VALUES ?";
+  const values = [[`${data.userName}`,`${data.email}`, `${data.passWord}`, `${data.confirmPassword}`]];
+
+  connection.query(dBQuery, [values], function (err, result) {
+    if (err) {
+        console.log('Error on query: ' + err.message);
+        return;
+    }
+    console.log("Query: Successful\n" + result.affectedRows);
+    // console.log('Data retrieved:\n');
+    // console.log(result);
+
+    // res.send('Sign up successful!');
+    // connection.end();
+  });
+
+
+  // return res.send(`Api Successful. 
+  // user: ${data.userName},
+  // pass: ${data.passWord}`);
+  
+  return res.send('API Successful');
 });
 
 
