@@ -18,37 +18,31 @@ const connection = mysql.createConnection({
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.get('/api/login', (req, res) => {
+app.post('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
-
-      
-      connection.connect((error) => {
-        if(error) {
-          console.log('Error connecting: ' + error.message);
-          return;
-      }
-      console.log('Connection: Established sucessfully'); 
+    const data = req.body;
+    // console.log(data.loginUser, data.loginPass); 
+    connection.connect((error) => {
+      if(error) {
+        console.log('Error connecting: ' + error.message);
+        return;
+    }
+    console.log('Connection: Established sucessfully'); 
+    });
+    connection.query("SELECT * from users", function (err, result) {
+        if (err) {
+            console.log('Error on query: ' + err.message);
+            return;
+        }
+        console.log("Query: Successful");
+        // console.log('Data retrieved:\n');
+        // console.log("user: ", data.loginUser, " pass: ", data.loginPass);
+        const records = result;
+        const recordsSearch = records.find(item => item.username === data.loginUser && item.password === data.loginPass);
+        let ans = false;
+        if (recordsSearch) ans = true;
+        res.send(ans);
       });
-      connection.query("SELECT * from users", function (err, result) {
-          if (err) {
-              console.log('Error on query: ' + err.message);
-              return;
-          }
-          console.log("Query: Successful");
-          console.log('Data retrieved:\n');
-          console.log(result);
-          console.log('Latest record:\n');
-          const lastRecord = result.pop();
-          console.log(lastRecord);
-          const dbRes = { 
-            username: lastRecord.confirm_pass,
-            password: lastRecord.password,
-          };
-          // connection.end();
-          res.send(dbRes);
-        });
-//     console.log("this api works you are just insecure")
-//        res.send("HELLO WORLD");
 })
 
 app.post('/api/signup', function (req, res) {
