@@ -1,10 +1,46 @@
 const express = require('express');
 const app = express();
+const http = require("http");
 const mysql = require('mysql');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+// const readline = require("readline");
+// const es = require('event-stream');
+// const socketio = require('socket.io');
 
 const port = process.env.PORT || 4000;
+
+// const app = express();
+
+const server = http.createServer(app);
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log("connected");
+  socket.on("data-logs", (data) => {
+    // console.log(data);
+    fs.createReadStream('file.txt')
+    .on('data', (chunk) => {
+      const lines = chunk.toString().split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        setTimeout(() => {
+          socket.emit('data-logs', lines[i]);
+        }, i * 1500);
+      }
+    });
+    // socket.emit("data-logs", "OKAY");
+  });
+
+    socket.on("disconnect", () => {
+      console.log("user disconnected");
+    });
+});
 
 const connection = mysql.createConnection({
   user: 'root',
@@ -82,7 +118,75 @@ app.post('/api/signup', function (req, res) {
   return res.send('API Successful');
 });
 
+// app.get('/api/data-logs', (req, res) => {
+//   // (1)
+// // const lineNr = 0;
+// //   fs.createReadStream('file.txt')
+// //   .pipe(es.split())
+// //   .pipe(es.mapSync((line) => {
+// //     // s.pause();
+
+// //     // lineNr += 1;
+// //     // do something with the line
+// //     setTimeout(() => {
+// //       console.log(line);
+// //       res.write(line);
+// //     }, 1000);
+// //     // console.log(line);
+// //     // res.write(line);
+// //   }))
+// //   .on('error', (err) => {
+// //     console.log('Error:', err);
+// //   })
+// //   .on('end', function(){
+// //     console.log('Read entire file.')
+// //     res.end();
+// // })
+// // 2
+// // const fileStream = fs.createReadStream('file.txt', 'utf8');
+
+// //   // Send each line of the file as a chunk of data
+// //   fileStream.on('data', (line) => {
+// //     res.write(line);
+// //   });
+
+// //   // When all the lines have been sent, end the response
+// //   fileStream.on('end', () => {
+// //     res.end();
+// //   });
+//   // 3
+//   // Open the file
+//   const fileStream = fs.createReadStream("file.txt");
+//   const rl = readline.createInterface({
+//     input: fileStream,
+//     crlfDelay: Infinity
+//   });
+
+//   // Read the file line by line
+//   rl.on("line", (line) => {
+//     // Do something with the line
+//     console.log(line);
+//     res.write(line);
+
+//     // Wait for 500 ms before reading the next line
+//     setTimeout(() => {
+//       rl.resume();
+//     }, 2500);
+//     rl.pause();
+//   })
+//   .on("close", () => {
+//     res.end();
+//     return;
+//   });
+
+//   // rl.on("end", res.end())
+  
+// });
 
 app.listen(port, () => {
   console.log(`App started on port: ${port}`)
+})
+
+server.listen(3054, () => {
+  console.log(`socket port: ${3054}`)
 })
