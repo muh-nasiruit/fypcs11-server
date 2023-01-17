@@ -58,7 +58,7 @@ app.post('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
     // const data = req.body;
     const { loginUser, loginPass } = req.body;
-    // console.log(data.loginUser, data.loginPass); 
+    console.log(loginUser, loginPass); 
     connection.connect((error) => {
       if(error) {
         console.log('Error connecting: ' + error.message);
