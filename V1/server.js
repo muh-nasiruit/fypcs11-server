@@ -20,7 +20,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.post('/api/login', (req, res) => {
     // res.addHeader("Access-Control-Allow-Origin", "*");
-    const data = req.body;
+    // const data = req.body;
+    const { loginUser, loginPass } = req.body;
     // console.log(data.loginUser, data.loginPass); 
     connection.connect((error) => {
       if(error) {
@@ -38,7 +39,7 @@ app.post('/api/login', (req, res) => {
         // console.log('Data retrieved:\n');
         // console.log("user: ", data.loginUser, " pass: ", data.loginPass);
         const records = result;
-        const recordsSearch = records.find(item => item.username === data.loginUser && item.password === data.loginPass);
+        const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
         let ans = false;
         if (recordsSearch) ans = true;
         res.send(ans);
@@ -46,8 +47,8 @@ app.post('/api/login', (req, res) => {
 })
 
 app.post('/api/signup', function (req, res) {
-  const data = req.body;
-  console.log('user details: ', data);
+  const { userName, email, passWord, confirmPassword } = req.body;
+  console.log('user details: ', req.body);
   connection.connect((error) => {
     if(error) {
       console.log('Error connecting: ' + error.message);
@@ -58,7 +59,7 @@ app.post('/api/signup', function (req, res) {
 
   // const dbQuery = `Insert into users VALUES (NULL, ${data.userName}, ${data.email}, ${data.passWord}, ${data.confirmPassword})`;
   const dBQuery = "INSERT INTO users (username, email, password, confirm_pass) VALUES ?";
-  const values = [[`${data.userName}`,`${data.email}`, `${data.passWord}`, `${data.confirmPassword}`]];
+  const values = [[`${userName}`,`${email}`, `${passWord}`, `${confirmPassword}`]];
 
   connection.query(dBQuery, [values], function (err, result) {
     if (err) {
