@@ -24,11 +24,11 @@ io.on('connection', (socket) => {
     fs.createReadStream('file.txt')
     .on('data', (chunk) => {
       const lines = chunk.toString().split('\n');
-      for (let i = 0; i < data; i++) {
+      for (let i = 0; i < 10; i++) {
         setTimeout(() => {
           console.log('Lines streamed: ', i+1);
-          socket.emit('data-logs', lines[i]);
-        }, i * 1500);
+          socket.emit('data-logs', { a: lines[i], b: i + 1});
+        }, i * data);
       }
     });
 
