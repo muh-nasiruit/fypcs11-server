@@ -64,6 +64,14 @@ app.use(bodyParser.json());
 app.post('/api/login', (req, res) => {
     const { loginUser, loginPass } = req.body;
     console.log(`User logging in: ${loginUser}`); 
+    connection.on('error', (err) => {
+    if (err.fatal) {
+      console.log('A fatal error occurred: ' + err.message);
+      // Attempt to reconnect
+      connection.connect();
+    }
+     });
+ 
     connection.connect((error) => {
       if(error) {
         console.log('Error connecting: ' + error.message);
@@ -84,6 +92,7 @@ app.post('/api/login', (req, res) => {
         console.log("Authentication: Complete!")
         res.send(ans);
       });
+      connection.end()
 })
 
 app.post('/api/signup', function (req, res) {
