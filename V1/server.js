@@ -56,6 +56,7 @@ const connection = mysql.createConnection({
   password: 'password',
   database: 'users',
   insecureAuth : true,
+  socketPath: '/var/run/mysqld/mysqld.sock'
 });
 
 app.use(cors());
