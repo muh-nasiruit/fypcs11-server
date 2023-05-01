@@ -79,20 +79,20 @@ app.post('/api/login', (req, res) => {
     }
     console.log('Connection: Established sucessfully'); 
     });
-//     connection.query("SELECT * from users", function (err, result) {
-//         if (err) {
-//             console.log('Error on query: ' + err.message);
+    connection.query("SELECT * from users", function (err, result) {
+        if (err) {
+            console.log('Error on query: ' + err.message);
 //             return;
-//         }
-//         console.log("Query: Successful");
-//         const records = result;
-//         const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
-//         let ans = false;
-//         if (recordsSearch) ans = true;
-//         console.log("Authentication: Complete!")
-//         res.send(ans);
-//       });
-      connection.end()
+        }
+        console.log("Query: Successful");
+        const records = result;
+        const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
+        let ans = false;
+        if (recordsSearch) ans = true;
+        console.log("Authentication: Complete!")
+        res.send(ans);
+      });
+//       connection.end()
 })
 
 app.post('/api/signup', function (req, res) {
