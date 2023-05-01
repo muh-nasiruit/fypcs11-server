@@ -64,25 +64,25 @@ app.use(bodyParser.json());
 app.post('/api/login', (req, res) => {
     const { loginUser, loginPass } = req.body;
     console.log(`User logging in: ${loginUser}`); 
-    connection.on('error', (err) => {
-    if (err.fatal) {
-      console.log('A fatal error occurred: ' + err.message);
-      // Attempt to reconnect
-      connection.connect();
-    }
-     });
+//     connection.on('error', (err) => {
+//     if (err.fatal) {
+//       console.log('A fatal error occurred: ' + err.message);
+//       // Attempt to reconnect
+//       connection.connect();
+//     }
+//      });
  
     connection.connect((error) => {
       if(error) {
         console.log('Error connecting: ' + error.message);
-//         return;
+        return;
     }
     console.log('Connection: Established sucessfully'); 
     });
     connection.query("SELECT * from users", function (err, result) {
         if (err) {
             console.log('Error on query: ' + err.message);
-//             return;
+            return;
         }
         console.log("Query: Successful");
         const records = result;
