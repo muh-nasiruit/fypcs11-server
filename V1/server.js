@@ -75,7 +75,7 @@ app.post('/api/login', (req, res) => {
     connection.connect((error) => {
       if(error) {
         console.log('Error connecting: ' + error.message);
-        return;
+//         return;
     }
     console.log('Connection: Established sucessfully'); 
     });
