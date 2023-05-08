@@ -73,13 +73,26 @@ app.post('/api/login', (req, res) => {
 //     }
 //      });
  
+    // connection.connect((error) => {
+    //   if(error) {
+    //     console.log('Error connecting: ' + error.message);
+    //     return;
+    // }
+    // console.log('Connection: Established sucessfully'); 
+    // });
+
+      // Check if the connection is already established
+  if (connection.state === 'disconnected') {
     connection.connect((error) => {
-      if(error) {
-        console.log('Error connecting: ' + error.message);
+      if (error) {
+        console.log('Error on connect: ' + error.message);
+        res.status(500).send('Internal server error');
         return;
-    }
-    console.log('Connection: Established sucessfully'); 
+      }
+
+      console.log('Connection: Established sucessfully');
     });
+  }
 
     const dBQuery = "SELECT id, username, password from users where username = ? and password = ?";
     // const values = `${loginUser},${loginPass}`;
@@ -87,6 +100,7 @@ app.post('/api/login', (req, res) => {
     connection.query(dBQuery, [loginUser, loginPass], function (err, result) {
       if (err) {
           console.log('Error on query: ' + err.message);
+          res.status(500).send('Internal server error');
           return;
       }
       // console.log("Query: Successful" + result.affectedRows);
@@ -120,7 +134,8 @@ app.post('/api/signup', function (req, res) {
   console.log('User Details: ', req.body);
   connection.connect((error) => {
     if(error) {
-      console.log('Error connecting: ' + error.message);
+      console.log('Error on connect: ' + error.message);
+      res.status(500).send('Internal server error');
       return;
   }
   console.log('Connection: Established sucessfully'); 
@@ -131,7 +146,8 @@ app.post('/api/signup', function (req, res) {
 
   connection.query(dBQuery, [values], function (err, result) {
     if (err) {
-        console.log('Error on query: ' + err.message);
+      console.log('Error on query: ' + err.message);
+      res.status(500).send('Internal server error');
         return;
     }
     // console.log("Query: Successful" + result.affectedRows);
@@ -146,6 +162,7 @@ app.post('/api/add-history', function (req, res) {
   connection.connect((error) => {
     if(error) {
       console.log('Error connecting: ' + error.message);
+      res.status(500).send('Internal server error');
       return;
   }
   console.log('Connection: Established sucessfully'); 
@@ -156,7 +173,8 @@ app.post('/api/add-history', function (req, res) {
 
   connection.query(dBQuery, [values], function (err, result) {
     if (err) {
-        console.log('Error on query: ' + err.message);
+      console.log('Error on query: ' + err.message);
+      res.status(500).send('Internal server error');
         return;
     }
     // console.log("Query: Successful" + result.affectedRows);
@@ -171,6 +189,7 @@ app.post('/api/get-history', function (req, res) {
   connection.connect((error) => {
     if(error) {
       console.log('Error connecting: ' + error.message);
+      res.status(500).send('Internal server error');
       return;
   }
   console.log('Connection: Established sucessfully'); 
@@ -181,7 +200,8 @@ app.post('/api/get-history', function (req, res) {
 
   connection.query(dBQuery, [values], function (err, result) {
     if (err) {
-        console.log('Error on query: ' + err.message);
+      console.log('Error on query: ' + err.message);
+      res.status(500).send('Internal server error');
         return;
     }
     // console.log("Query: Successful" + result.affectedRows);
