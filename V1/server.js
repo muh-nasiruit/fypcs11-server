@@ -81,7 +81,7 @@ app.post('/api/login', (req, res) => {
     console.log('Connection: Established sucessfully'); 
     });
 
-    const dBQuery = "SELECT id from users where username = ? and password = ?";
+    const dBQuery = "SELECT id, username, password from users where username = ? and password = ?";
     // const values = `${loginUser},${loginPass}`;
 
     connection.query(dBQuery, [loginUser, loginPass], function (err, result) {
@@ -90,34 +90,27 @@ app.post('/api/login', (req, res) => {
           return;
       }
       // console.log("Query: Successful" + result.affectedRows);
-      // console.log("Query: Successful! New user created.");
       console.log("Query: Successful! Login Check");
-      const records = result;
-      const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
-      let ans = false;
-      if (recordsSearch) ans = true;
-      console.log("Authentication: Complete!")
-      const newObj = {
-        check: ans,
-        userId: records
+      if (result.length === 0) {
+        // No matching user found
+        const failedObj = {
+          userId: null,
+          check: true,
+          message: 'Invalid Username or Password'
+        }
+        return res.status(401).json(failedObj);
       }
-      res.send(newObj);
+  
+      // User found, return the user object
+      console.log("Authentication: Complete!")
+      const foundObj = {
+        check: ans,
+        userId: records.id,
+        message: 'Valid Username or Password'
+      }
+      //       connection.end()
+      return res.status(200).json(foundObj);
     });
-
-    // connection.query("SELECT id from users where username = ? and password = ?", function (err, result) {
-    //     if (err) {
-    //         console.log('Error on query: ' + err.message);
-    //         return;
-    //     }
-    //     console.log("Query: Successful");
-    //     const records = result;
-    //     const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
-    //     let ans = false;
-    //     if (recordsSearch) ans = true;
-    //     console.log("Authentication: Complete!")
-    //     res.send(ans);
-    //   });
-//       connection.end()
 })
 
 app.post('/api/signup', function (req, res) {
