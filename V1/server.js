@@ -246,8 +246,17 @@ app.post('/api/set/arch-logs', async (req, res) => {
   }
 });
 
-app.post('/api/get/arch-logs', function (req, res) {
+app.post('/api/get/arch-logs', async (req, res) => {
+  const { user_id, data_src } = req.body;
+  try {
   
+          const fetched = await userlogs.find({ user_id: user_id, data_src: data_src}).select('log_data -_id');
+          return res.status(200).json(fetched);
+  } catch (err) {
+          console.error(err);
+          return res.status(500).json({message: 'Server error'});
+  }
+
 });
 
 process.on('exit', () => {
