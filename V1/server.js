@@ -132,14 +132,17 @@ app.post('/api/login', (req, res) => {
 app.post('/api/signup', function (req, res) {
   const { userName, email, passWord } = req.body;
   console.log('User Details: ', req.body);
-  connection.connect((error) => {
-    if(error) {
-      console.log('Error on connect: ' + error.message);
-      res.status(500).send('Internal server error');
-      return;
+  if (connection.state === 'disconnected') {
+    connection.connect((error) => {
+      if (error) {
+        console.log('Error on connect: ' + error.message);
+        res.status(500).send('Internal server error');
+        return;
+      }
+
+      console.log('Connection: Established sucessfully');
+    });
   }
-  console.log('Connection: Established sucessfully'); 
-  });
 
   const dBQuery = "INSERT INTO users (username, email, password) VALUES ?";
   const values = [[`${userName}`,`${email}`, `${passWord}`]];
@@ -159,14 +162,17 @@ app.post('/api/signup', function (req, res) {
 app.post('/api/add-history', function (req, res) {
   const { id, con_type, timestamp } = req.body;
   
-  connection.connect((error) => {
-    if(error) {
-      console.log('Error connecting: ' + error.message);
-      res.status(500).send('Internal server error');
-      return;
+  if (connection.state === 'disconnected') {
+    connection.connect((error) => {
+      if (error) {
+        console.log('Error on connect: ' + error.message);
+        res.status(500).send('Internal server error');
+        return;
+      }
+
+      console.log('Connection: Established sucessfully');
+    });
   }
-  console.log('Connection: Established sucessfully'); 
-  });
   
   const dBQuery = "INSERT INTO users_history (user_id, con_type, timestamp) VALUES ?";
   const values = [[`${id}`,`${con_type}`, `${timestamp}`]];
@@ -186,14 +192,17 @@ app.post('/api/add-history', function (req, res) {
 
 app.post('/api/get-history', function (req, res) {
   const { id } = req.body;
-  connection.connect((error) => {
-    if(error) {
-      console.log('Error connecting: ' + error.message);
-      res.status(500).send('Internal server error');
-      return;
+  if (connection.state === 'disconnected') {
+    connection.connect((error) => {
+      if (error) {
+        console.log('Error on connect: ' + error.message);
+        res.status(500).send('Internal server error');
+        return;
+      }
+
+      console.log('Connection: Established sucessfully');
+    });
   }
-  console.log('Connection: Established sucessfully'); 
-  });
 
   const dBQuery = "SELECT * from users_history where user_id = ?";
   const values = `${id}`;
