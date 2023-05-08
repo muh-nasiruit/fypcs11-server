@@ -115,7 +115,7 @@ app.post('/api/login', (req, res) => {
 })
 
 app.post('/api/signup', function (req, res) {
-  const { userName, email, passWord, confirmPassword } = req.body;
+  const { userName, email, passWord } = req.body;
   console.log('User Details: ', req.body);
   connection.connect((error) => {
     if(error) {
@@ -125,8 +125,8 @@ app.post('/api/signup', function (req, res) {
   console.log('Connection: Established sucessfully'); 
   });
 
-  const dBQuery = "INSERT INTO users (username, email, password, confirm_pass) VALUES ?";
-  const values = [[`${userName}`,`${email}`, `${passWord}`, `${confirmPassword}`]];
+  const dBQuery = "INSERT INTO users (username, email, password) VALUES ?";
+  const values = [[`${userName}`,`${email}`, `${passWord}`]];
 
   connection.query(dBQuery, [values], function (err, result) {
     if (err) {
@@ -134,7 +134,7 @@ app.post('/api/signup', function (req, res) {
         return;
     }
     // console.log("Query: Successful" + result.affectedRows);
-    console.log("Query: Successful! New user created.");
+    console.log("Query: Successful! New User Created.");
   });
 
   return res.send('API Successful');
