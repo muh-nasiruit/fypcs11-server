@@ -238,6 +238,7 @@ app.post('/api/set/arch-logs', async (req, res) => {
       log_data: log_data,
     });
     newLog.save();
+    console.log("Query: Successful! Data Archived.");
 
     return res.status(200).json('Data Archived!');
   } catch (err) {
@@ -250,8 +251,9 @@ app.post('/api/get/arch-logs', async (req, res) => {
   const { user_id, data_src } = req.body;
   try {
   
-          const fetched = await userlogs.find({ user_id: user_id, data_src: data_src}).select('log_data -_id');
-          return res.status(200).json(fetched);
+    const fetched = await userlogs.find({ user_id: user_id, data_src: data_src}).select('log_data -_id');
+    console.log("Query: Successful! Archived Data fetched.");
+    return res.status(200).json(fetched);
   } catch (err) {
           console.error(err);
           return res.status(500).json({message: 'Server error'});
