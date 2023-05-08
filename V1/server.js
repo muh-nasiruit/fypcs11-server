@@ -110,9 +110,9 @@ app.post('/api/login', (req, res) => {
         message: 'Valid Username or Password'
       }
       // dont end connection here as next page also requires connection (edit later)
-      connection.end()
-      return res.status(200).json(foundObj);
+      res.status(200).json(foundObj);
     });
+    return connection.end();
 })
 
 app.post('/api/signup', function (req, res) {
@@ -188,9 +188,9 @@ app.post('/api/get-history', function (req, res) {
     }
     // console.log("Query: Successful" + result.affectedRows);
     console.log("Query: Successful! New User Created.");
-    connection.end()
-    return res.status(200).json(result);
+    res.status(200).json(result);
   });
+  return connection.end();
 
 });
 
