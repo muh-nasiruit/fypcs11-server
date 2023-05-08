@@ -98,7 +98,8 @@ app.post('/api/login', (req, res) => {
           check: false,
           message: 'Invalid Username or Password'
         }
-        return res.status(401).json(failedObj);
+        res.status(401).json(failedObj);
+        return; 
       }
   
       // User found, return the user object
@@ -111,8 +112,13 @@ app.post('/api/login', (req, res) => {
       }
       // dont end connection here as next page also requires connection (edit later)
       res.status(200).json(foundObj);
+      connection.end((err) => {
+        if (err) {
+          console.error(err);
+        }
+        console.log('MySQL connection closed.');
+      });
     });
-    return connection.end();
 })
 
 app.post('/api/signup', function (req, res) {
