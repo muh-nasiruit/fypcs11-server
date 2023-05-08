@@ -109,7 +109,8 @@ app.post('/api/login', (req, res) => {
         check: true,
         message: 'Valid Username or Password'
       }
-      //       connection.end()
+      // dont end connection here as next page also requires connection (edit later)
+      connection.end()
       return res.status(200).json(foundObj);
     });
 })
@@ -136,8 +137,61 @@ app.post('/api/signup', function (req, res) {
     // console.log("Query: Successful" + result.affectedRows);
     console.log("Query: Successful! New User Created.");
   });
-
+  connection.end()
   return res.send('API Successful');
+});
+
+app.post('/api/add-history', function (req, res) {
+  const { id, con_type, timestamp } = req.body;
+  
+  connection.connect((error) => {
+    if(error) {
+      console.log('Error connecting: ' + error.message);
+      return;
+  }
+  console.log('Connection: Established sucessfully'); 
+  });
+  
+  const dBQuery = "INSERT INTO users_history (user_id, con_type, timestamp) VALUES ?";
+  const values = [[`${id}`,`${con_type}`, `${timestamp}`]];
+
+  connection.query(dBQuery, [values], function (err, result) {
+    if (err) {
+        console.log('Error on query: ' + err.message);
+        return;
+    }
+    // console.log("Query: Successful" + result.affectedRows);
+    console.log("Query: Successful! Added History.");
+  });
+  connection.end()
+  return res.send('API Added History');
+
+});
+
+app.post('/api/get-history', function (req, res) {
+  const { id } = req.body;
+  connection.connect((error) => {
+    if(error) {
+      console.log('Error connecting: ' + error.message);
+      return;
+  }
+  console.log('Connection: Established sucessfully'); 
+  });
+
+  const dBQuery = "SELECT * from users_history where user_id = ?";
+  const values = `${id}`;
+
+  connection.query(dBQuery, [values], function (err, result) {
+    if (err) {
+        console.log('Error on query: ' + err.message);
+        return;
+    }
+    // console.log("Query: Successful" + result.affectedRows);
+    console.log("Query: Successful! New User Created.");
+    connection.end()
+    return res.status(200).json(result);
+  });
+
 });
 
 app.listen(port, () => {
