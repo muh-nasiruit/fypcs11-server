@@ -80,19 +80,43 @@ app.post('/api/login', (req, res) => {
     }
     console.log('Connection: Established sucessfully'); 
     });
-    connection.query("SELECT * from users", function (err, result) {
-        if (err) {
-            console.log('Error on query: ' + err.message);
-            return;
-        }
-        console.log("Query: Successful");
-        const records = result;
-        const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
-        let ans = false;
-        if (recordsSearch) ans = true;
-        console.log("Authentication: Complete!")
-        res.send(ans);
-      });
+
+    const dBQuery = "SELECT id from users where username = ? and password = ?";
+    const values = [[`${loginUser}`,`${loginPass}`]];
+
+    connection.query(dBQuery, [values], function (err, result) {
+      if (err) {
+          console.log('Error on query: ' + err.message);
+          return;
+      }
+      // console.log("Query: Successful" + result.affectedRows);
+      // console.log("Query: Successful! New user created.");
+      console.log("Query: Successful! Login Check");
+      const records = result;
+      const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
+      let ans = false;
+      if (recordsSearch) ans = true;
+      console.log("Authentication: Complete!")
+      const newObj = {
+        check: ans,
+        userId: records
+      }
+      res.send(newObj);
+    });
+
+    // connection.query("SELECT id from users where username = ? and password = ?", function (err, result) {
+    //     if (err) {
+    //         console.log('Error on query: ' + err.message);
+    //         return;
+    //     }
+    //     console.log("Query: Successful");
+    //     const records = result;
+    //     const recordsSearch = records.find(item => item.username === loginUser && item.password === loginPass);
+    //     let ans = false;
+    //     if (recordsSearch) ans = true;
+    //     console.log("Authentication: Complete!")
+    //     res.send(ans);
+    //   });
 //       connection.end()
 })
 
