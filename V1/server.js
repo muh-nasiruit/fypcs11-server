@@ -6,10 +6,17 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const tm = require( 'text-miner');
+const userlogs = require('./db.js');
 
 const port = process.env.PORT || 4000;
-
 const server = http.createServer(app);
+
+const mongoUrl = 'mongodb://172.104.174.187:27017/data_archive';
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Error connecting to MongoDB'));
+db.once('open', () => console.log('Connected to MongoDB'));
 
 const io = require("socket.io")(server, {
   cors: {
@@ -218,6 +225,28 @@ app.post('/api/get-history', function (req, res) {
     res.status(200).json(result);
   });
 
+});
+
+app.post('/api/set/arch-logs', async (req, res) => {
+  const { data_src, user_id, log_data } = req.body;
+  try {
+
+    const newLog = new userlogs({
+      user_id: user_id,
+      data_src: data_src,
+      log_data: log_data,
+    });
+    newLog.save();
+
+    return res.status(200).json('Data Archived!');
+  } catch (err) {
+      console.error(err);
+      return res.status(500).json({message: 'Server error'});
+  }
+});
+
+app.post('/api/get/arch-logs', function (req, res) {
+  
 });
 
 process.on('exit', () => {
