@@ -112,12 +112,6 @@ app.post('/api/login', (req, res) => {
       }
       // dont end connection here as next page also requires connection (edit later)
       res.status(200).json(foundObj);
-      connection.end((err) => {
-        if (err) {
-          console.error(err);
-        }
-        console.log('MySQL connection closed.');
-      });
     });
 })
 
@@ -143,8 +137,7 @@ app.post('/api/signup', function (req, res) {
     // console.log("Query: Successful" + result.affectedRows);
     console.log("Query: Successful! New User Created.");
   });
-  connection.end()
-  return res.send('API Successful');
+  res.send('API Successful');
 });
 
 app.post('/api/add-history', function (req, res) {
@@ -169,8 +162,7 @@ app.post('/api/add-history', function (req, res) {
     // console.log("Query: Successful" + result.affectedRows);
     console.log("Query: Successful! Added History.");
   });
-  connection.end()
-  return res.send('API Added History');
+  res.send('API Added History');
 
 });
 
@@ -196,8 +188,11 @@ app.post('/api/get-history', function (req, res) {
     console.log("Query: Successful! New User Created.");
     res.status(200).json(result);
   });
-  return connection.end();
 
+});
+
+process.on('exit', () => {
+  connection.end();
 });
 
 app.listen(port, () => {
