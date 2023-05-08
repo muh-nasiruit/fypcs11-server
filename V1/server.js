@@ -104,7 +104,7 @@ app.post('/api/login', (req, res) => {
       // User found, return the user object
       console.log("Authentication: Complete!")
       const foundObj = {
-        check: ans,
+        check: true,
         userId: records.id,
         message: 'Valid Username or Password'
       }
