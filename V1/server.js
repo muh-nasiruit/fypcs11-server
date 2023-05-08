@@ -185,7 +185,7 @@ app.post('/api/get-history', function (req, res) {
         return;
     }
     // console.log("Query: Successful" + result.affectedRows);
-    console.log("Query: Successful! New User Created.");
+    console.log("Query: Successful! User History Found.");
     res.status(200).json(result);
   });
 
