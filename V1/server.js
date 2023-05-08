@@ -82,7 +82,7 @@ app.post('/api/login', (req, res) => {
     });
 
     const dBQuery = "SELECT id from users where username = ? and password = ?";
-    const values = [[`${loginUser}`,`${loginPass}`]];
+    const values = [`${loginUser}`,`${loginPass}`];
 
     connection.query(dBQuery, [values], function (err, result) {
       if (err) {
