@@ -95,7 +95,7 @@ app.post('/api/login', (req, res) => {
         // No matching user found
         const failedObj = {
           userId: null,
-          check: true,
+          check: false,
           message: 'Invalid Username or Password'
         }
         return res.status(401).json(failedObj);
