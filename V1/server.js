@@ -82,9 +82,9 @@ app.post('/api/login', (req, res) => {
     });
 
     const dBQuery = "SELECT id from users where username = ? and password = ?";
-    const values = [`${loginUser}`,`${loginPass}`];
+    // const values = `${loginUser},${loginPass}`;
 
-    connection.query(dBQuery, [values], function (err, result) {
+    connection.query(dBQuery, [loginUser, loginPass], function (err, result) {
       if (err) {
           console.log('Error on query: ' + err.message);
           return;
