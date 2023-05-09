@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
 
 const connection = mysql.createConnection({
   user: 'root',
-  host: 'localhost',
+  host: '172.104.174.187',
   password: 'password',
   database: 'users',
   insecureAuth : true,
