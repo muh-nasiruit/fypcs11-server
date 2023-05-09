@@ -102,7 +102,7 @@ app.post('/api/login', (req, res) => {
     });
   }
 
-    const dBQuery = "SELECT id, username, password from users where username = ? and password = ?";
+    const dBQuery = "SELECT id, email from users where username = ? and password = ?";
     // const values = `${loginUser},${loginPass}`;
 
     connection.query(dBQuery, [loginUser, loginPass], function (err, result) {
@@ -117,6 +117,7 @@ app.post('/api/login', (req, res) => {
         // No matching user found
         const failedObj = {
           userId: null,
+          email: null,
           check: false,
           message: 'Invalid Username or Password'
         }
@@ -129,6 +130,7 @@ app.post('/api/login', (req, res) => {
       console.log("Authentication: Complete!")
       const foundObj = {
         userId: result[0].id,
+        email: result[0].email,
         check: true,
         message: 'Valid Username or Password'
       }
