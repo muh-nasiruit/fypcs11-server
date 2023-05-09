@@ -154,19 +154,34 @@ app.post('/api/signup', function (req, res) {
     });
   }
 
-  const dBQuery = "INSERT INTO users (username, email, password) VALUES ?";
-  const values = [[`${userName}`,`${email}`, `${passWord}`]];
+  const checkUserQuery = `SELECT * FROM users WHERE username = ? OR email = ?`;
 
-  connection.query(dBQuery, [values], function (err, result) {
+  connection.query(checkUserQuery, [userName, email], function (err, result) {
     if (err) {
-      console.log('Error on query: ' + err.message);
-      res.status(500).send('Internal server error');
+        console.log('Error on query: ' + err.message);
+        res.status(500).send('Internal server error');
         return;
     }
-    // console.log("Query: Successful" + result.affectedRows);
-    console.log("Query: Successful! New User Created.");
+
+    if (result.length > 0) {
+      console.log('User already exists');
+      res.status(200).send('User already exists');
+    } else {
+      const dBQuery = "INSERT INTO users (username, email, password) VALUES ?";
+      const values = [[`${userName}`,`${email}`, `${passWord}`]];
+    
+      connection.query(dBQuery, [values], function (err, result) {
+        if (err) {
+          console.log('Error on query: ' + err.message);
+          res.status(500).send('Internal server error');
+            return;
+        }
+        // console.log("Query: Successful" + result.affectedRows);
+        console.log("Query: Successful! New User Created.");
+      });
+      res.status(200).send('New User Created');
+    }
   });
-  res.send('API Successful');
 });
 
 app.post('/api/add-history', function (req, res) {
