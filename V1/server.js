@@ -229,7 +229,7 @@ app.post('/api/get-history', function (req, res) {
     });
   }
 
-  const dBQuery = "SELECT * from users_history where user_id = ?";
+  const dBQuery = "SELECT u.username, uh.con_type, uh.timestamp FROM users u INNER JOIN users_history uh ON u.id = uh.user_id WHERE u.id = ?";
   const values = `${id}`;
 
   connection.query(dBQuery, [values], function (err, result) {
