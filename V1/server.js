@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const tm = require( 'text-miner');
 const mongoose = require('mongoose');
-const tm = require('text-miner');
 const userlogs = require('./db.js');
 
 const port = process.env.PORT || 4000;
