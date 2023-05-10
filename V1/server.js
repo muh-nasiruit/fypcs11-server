@@ -278,7 +278,7 @@ app.post('/api/get/arch-logs', async (req, res) => {
 
 });
 
-function getTermFrequency(data, term) {
+function getTermFrequency(data) {
   // const miner = new TextMiner();
   // miner.addDoc(data);
   // const frequency = miner.termFreq(term)[0][1];
@@ -291,11 +291,16 @@ function getTermFrequency(data, term) {
 
 }
 
+function getObjectsByValue(arr, key, value) {
+  return arr.filter(obj => obj[key] === value);
+}
+
 app.post('/api/get/log-term', async (req, res) => {
   const { log_data, log_type } = req.body;
 
   try {
-    const termFrequency = getTermFrequency(log_data, log_type);
+    const termFrequency = getTermFrequency(log_data);
+    const finalFreq = getObjectsByValue(termFrequency, 'word', log_type)
     const logRes = {
       log_type: log_type,
       analysis: termFrequency
