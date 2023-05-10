@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const tm = require( 'text-miner');
 const mongoose = require('mongoose');
-const { TextMiner } = require('text-miner');
+const tm = require('text-miner');
 const userlogs = require('./db.js');
 
 const port = process.env.PORT || 4000;
@@ -280,10 +280,16 @@ app.post('/api/get/arch-logs', async (req, res) => {
 });
 
 function getTermFrequency(data, term) {
-  const miner = new TextMiner();
-  miner.addDoc(data);
-  const frequency = miner.termFreq(term)[0][1];
+  // const miner = new TextMiner();
+  // miner.addDoc(data);
+  // const frequency = miner.termFreq(term)[0][1];
+  // return frequency ? frequency : 0;
+  const my_corpus = new tm.Corpus();
+  my_corpus.addDoc(data);
+  const newDoc = new tm.DocumentTermMatrix( my_corpus )
+  const frequency = newDoc.findFreqTerms(1)
   return frequency ? frequency : 0;
+
 }
 
 app.post('/api/get/log-term', async (req, res) => {
