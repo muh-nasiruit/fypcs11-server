@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const tm = require( 'text-miner');
 const mongoose = require('mongoose');
+const { TextMiner } = require('text-miner');
 const userlogs = require('./db.js');
 
 const port = process.env.PORT || 4000;
@@ -257,7 +258,7 @@ app.post('/api/set/arch-logs', async (req, res) => {
     newLog.save();
     console.log("Query: Successful! Data Archived.");
 
-    return res.status(200).json('Data Archived!');
+    res.status(200).json('Data Archived!');
   } catch (err) {
       console.error(err);
       return res.status(500).json({message: 'Server error'});
@@ -270,10 +271,39 @@ app.post('/api/get/arch-logs', async (req, res) => {
   
     const fetched = await userlogs.find({ user_id: user_id, data_src: data_src}).select('log_data -_id');
     console.log("Query: Successful! Archived Data fetched.");
-    return res.status(200).json(fetched[fetched.length - 1]);
+    res.status(200).json(fetched[fetched.length - 1]);
   } catch (err) {
           console.error(err);
           return res.status(500).json({message: 'Server error'});
+  }
+
+});
+
+function getTermFrequency(data, term) {
+  const miner = new TextMiner();
+  miner.addDoc(data);
+  const frequency = miner.termFreq(term)[0][1];
+  return frequency ? frequency : 0;
+}
+
+app.post('/api/get/log-term', async (req, res) => {
+  const { log_data, log_type } = req.body;
+
+  try {
+    const termFrequency = getTermFrequency(log_data, log_type);
+    const logRes = {
+      log_type: log_type,
+      analysis: termFrequency
+    }
+    console.log("Analysis: Successful! Data Analized.");
+    res.status(200).json(logRes);
+  } catch (err) {
+    const logErr = {
+      log_type: null,
+      analysis: null
+    }
+    console.log('Error on analysis: ' + err.message);
+    return res.status(500).json(logErr);
   }
 
 });
