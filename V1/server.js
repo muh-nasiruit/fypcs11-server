@@ -303,7 +303,7 @@ app.post('/api/get/log-term', async (req, res) => {
     const finalFreq = getObjectsByValue(termFrequency, 'word', log_type)
     const logRes = {
       log_type: log_type,
-      analysis: finalFreq
+      analysis: finalFreq[0]
     }
     console.log("Analysis: Successful! Data Analized.");
     res.status(200).json(logRes);
