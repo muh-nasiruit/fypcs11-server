@@ -12,8 +12,8 @@ const userlogs = require('./db.js');
 const port = process.env.PORT || 4000;
 const server = http.createServer(app);
 
-const mongoUrl = 'mongodb://172.104.174.187:27017/data_archive';
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoUrl = 'mongodb://mongouser:password@172.104.174.187:27017';
+mongoose.connect(mongoUrl, { dbName: 'data-archive'});
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'Error connecting to MongoDB'));
