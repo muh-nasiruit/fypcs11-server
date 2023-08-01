@@ -332,13 +332,10 @@ app.post('/linux-analysis', (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    // const failedLogins = stdout.split('\n').map((line) => {
-    //   const [count, date, time, ip] = line.trim().split(' ');
-    //   return { count: parseInt(count), date: `${date} ${time}`, ip };
-    // });
-    const failedLogins = {
-      data : stdout
-    };
+    const failedLogins = stdout.split('\n').map((line) => {
+      const [count, month, day] = line.trim().split(' ');
+      return { count: parseInt(count), date: `${month} ${day}`};
+    });
 
     res.status(200).json(failedLogins);
   });
