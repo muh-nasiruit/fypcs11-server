@@ -417,16 +417,8 @@ app.post('/linux-fetch', (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
       }
       const ipAddressRegex = /(?:[0-9]{1,3}\.){3}[0-9]{1,3}/;
-      const filterStringsContainingIP = (arrayOfStrings) => {
-        return arrayOfStrings.filter((str) => ipAddressRegex.test(str));
-      };
-      const failedLogins = stdout.split('\n').map((line) => {
-        if (line) {
-          // const [data] = line.split(' ');
-          return { ip_add: filterStringsContainingIP(line)};
-          // console.log(count, month, day);
-        }
-      });
+
+      const failedLogins = stdout.split('\n').filter((str) => ipAddressRegex.test(str));
       
   
       // console.log('RESULT: ',stdout.length);
