@@ -320,8 +320,8 @@ app.post('/api/get/log-term', async (req, res) => {
 });
 
 app.post('/linux-analysis', (req, res) => {
-  const { check } = req.body;
-  console.log(check);
+  // const { check } = req.body;
+  // console.log(check);
 
   const command = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $1, $2}' | sort | uniq -c | sort -rnk1";
 
@@ -344,7 +344,7 @@ app.post('/linux-analysis', (req, res) => {
     });
     // console.log('RESULT: ',stdout.length);
     
-    return res.status(200).json({msg: failedLogins});
+    return res.status(200).json({msg: failedLogins.slice(-2)});
   });
 });
 
