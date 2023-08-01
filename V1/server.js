@@ -343,8 +343,9 @@ app.post('/linux-analysis', (req, res) => {
       }
     });
     // console.log('RESULT: ',stdout.length);
-    
-    return res.status(200).json({msg: failedLogins.slice(0, -1)});
+    const filterArr = failedLogins.filter(function(e){return e}); 
+
+    return res.status(200).json({out: filterArr});
   });
 });
 
