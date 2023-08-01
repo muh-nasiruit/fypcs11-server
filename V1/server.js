@@ -332,12 +332,14 @@ app.post('/linux-analysis', (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    const failedLogins = stdout.split('\n').map((line) => {
-      const [count, month, day] = line.trim().split(' ');
-      return { count: parseInt(count), date: `${month} ${day}`};
-    });
+    // const failedLogins = stdout.split('\n').map((line) => {
+    //   const [count, month, day] = line.trim().split(' ');
+    //   // return { count: parseInt(count), date: `${month} ${day}`};
+    //   console.log(count, month, day);
+    // });
+    console.log(stdout.length);
 
-    res.status(200).json(failedLogins);
+    res.status(200).json({msg: 'API Success'});
   });
 });
 
