@@ -394,13 +394,7 @@ app.post('/linux-fetch', (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
       }
   
-      const failedLogins = stdout.split('\n').map((line) => {
-        if (line) {
-          const [count, month, day] = line.trim().split(' ');
-          return { count: parseInt(count), date: `${month} ${day}`};
-          // console.log(count, month, day);
-        }
-      });
+      const failedLogins = stdout.split('\n');
       // console.log('RESULT: ',stdout.length);
       const filterArr = failedLogins.filter(function(e){return e}); 
   
