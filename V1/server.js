@@ -337,7 +337,7 @@ app.post('/linux-analysis', (req, res) => {
 
     const failedLogins = stdout.split('\n').map((line) => {
       const [count, month, day] = line.trim().split(' ');
-      return { count: parseInt(count), date: `${month} ${day}`};
+      if (count) return { count: parseInt(count), date: `${month} ${day}`};
       // console.log(count, month, day);
     });
     // console.log('RESULT: ',stdout.length);
