@@ -419,8 +419,8 @@ app.post('/linux-fetch', (req, res) => {
   
       const failedLogins = stdout.split('\n').map((line) => {
         if (line) {
-          const [count, ip_add] = line.trim().split(' ');
-          return { count: parseInt(count), ip_add: ip_add};
+          const [data] = line.split(' ');
+          return { ip_add: data};
           // console.log(count, month, day);
         }
       });
