@@ -420,7 +420,7 @@ app.post('/linux-fetch', (req, res) => {
       const failedLogins = stdout.split('\n').map((line) => {
         if (line) {
           // const [data] = line.split(' ');
-          return { ip_add: line.split(' ')};
+          return { ip_add: line};
           // console.log(count, month, day);
         }
       });
