@@ -422,9 +422,11 @@ app.post('/linux-fetch', (req, res) => {
       
   
       // console.log('RESULT: ',stdout.length);
-      // const filterArr = failedLogins.filter(function(e){return e}); 
+      const filterArr = failedLogins.map((line) => {
+        return line.trim().split(' ')
+      })
   
-      return res.status(200).json({out: failedLogins});
+      return res.status(200).json({out: filterArr});
     });
 
   } else {
