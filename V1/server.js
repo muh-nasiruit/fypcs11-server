@@ -320,33 +320,61 @@ app.post('/api/get/log-term', async (req, res) => {
 });
 
 app.post('/linux-analysis', (req, res) => {
-  // const { check } = req.body;
-  // console.log(check);
+  const { check } = req.body;
+  console.log(check);
 
-  const command = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $1, $2}' | sort | uniq -c | sort -rnk1";
-
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error('Error executing the command:', error);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    if (stderr) {
-      console.error('Error in command execution:', stderr);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-
-    const failedLogins = stdout.split('\n').map((line) => {
-      if (line) {
-        const [count, month, day] = line.trim().split(' ');
-        return { count: parseInt(count), date: `${month} ${day}`};
-        // console.log(count, month, day);
+  const command1 = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $1, $2}' | sort | uniq -c | sort -rnk1";
+  const command2 = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $1, $2, $3}' | sort | uniq -c | sort -rnk1";
+  if (check === 0) {
+    exec(command1, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error executing the command:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
       }
+      if (stderr) {
+        console.error('Error in command execution:', stderr);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+  
+      const failedLogins = stdout.split('\n').map((line) => {
+        if (line) {
+          const [count, month, day] = line.trim().split(' ');
+          return { count: parseInt(count), date: `${month} ${day}`};
+          // console.log(count, month, day);
+        }
+      });
+      // console.log('RESULT: ',stdout.length);
+      const filterArr = failedLogins.filter(function(e){return e}); 
+  
+      return res.status(200).json({out: filterArr});
     });
-    // console.log('RESULT: ',stdout.length);
-    const filterArr = failedLogins.filter(function(e){return e}); 
+  } else if (check === 1) {
+    exec(command2, (error, stdout, stderr) => {
+      if (error) {
+        console.error('Error executing the command:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+      if (stderr) {
+        console.error('Error in command execution:', stderr);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+  
+      const failedLogins = stdout.split('\n').map((line) => {
+        if (line) {
+          const [count, month, day, time] = line.trim().split(' ');
+          return { count: parseInt(count), date: `${month} ${day}`, time: time};
+          // console.log(count, month, day);
+        }
+      });
+      // console.log('RESULT: ',stdout.length);
+      const filterArr = failedLogins.filter(function(e){return e}); 
+  
+      return res.status(200).json({out: filterArr});
+    });
 
-    return res.status(200).json({out: filterArr});
-  });
+  } else {
+    return res.status(500).json({ error: 'No Input' });
+  }
 });
 
 process.on('exit', () => {
