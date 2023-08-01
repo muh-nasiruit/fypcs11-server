@@ -305,7 +305,7 @@ app.post('/api/get/log-term', async (req, res) => {
       log_type: log_type,
       analysis: finalFreq[0]
     }
-    console.log("Analysis: Successful! Data Analized.");
+    console.log("Analysis: Successful! Data Analyzed.");
     res.status(200).json(logRes);
   } catch (err) {
     const logErr = {
@@ -316,6 +316,32 @@ app.post('/api/get/log-term', async (req, res) => {
     return res.status(500).json(logErr);
   }
 
+});
+
+app.post('/linux-analysis', (req, res) => {
+
+  const command = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $1, $2}' | sort | uniq -c | sort -rnk1";
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error('Error executing the command:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    if (stderr) {
+      console.error('Error in command execution:', stderr);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    // const failedLogins = stdout.split('\n').map((line) => {
+    //   const [count, date, time, ip] = line.trim().split(' ');
+    //   return { count: parseInt(count), date: `${date} ${time}`, ip };
+    // });
+    const failedLogins = {
+      data : stdout
+    };
+
+    res.status(200).json(failedLogins);
+  });
 });
 
 process.on('exit', () => {
