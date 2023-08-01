@@ -396,12 +396,13 @@ app.post('/linux-fetch', (req, res) => {
   
       const failedLogins = stdout.split('\n').map((line) => {
         const lineArr = line.split(' ');
-        return {date: `${lineArr[0]} ${lineArr[1]}`, time: lineArr[2], msg: lineArr.splice(2,-1).join(' ')}
+        // return {date: `${lineArr[0]} ${lineArr[1]}`, time: lineArr[2], msg: lineArr.splice(2,-1).join(' ')}
+        return lineArr.splice(2,-1)
       });
       // console.log('RESULT: ',stdout.length);
-      const filterArr = failedLogins.filter(function(e){return e}); 
+      // const filterArr = failedLogins.filter(function(e){return e}); 
   
-      return res.status(200).json({out: filterArr});
+      return res.status(200).json({out: failedLogins});
     });
   } else if (check === 1) {
     exec(command2, (error, stdout, stderr) => {
