@@ -8,6 +8,7 @@ const fs = require('fs');
 const tm = require( 'text-miner');
 const mongoose = require('mongoose');
 const userlogs = require('./db.js');
+const { exec } = require('child_process');
 
 const port = process.env.PORT || 4000;
 const server = http.createServer(app);
