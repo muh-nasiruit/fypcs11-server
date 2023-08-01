@@ -344,7 +344,7 @@ app.post('/linux-analysis', (req, res) => {
     });
     // console.log('RESULT: ',stdout.length);
     
-    return res.status(200).json({msg: failedLogins.slice(-2)});
+    return res.status(200).json({msg: failedLogins.slice(0, -2)});
   });
 });
 
