@@ -425,9 +425,9 @@ app.post('/linux-fetch', (req, res) => {
         }
       });
       // console.log('RESULT: ',stdout.length);
-      const filterArr = failedLogins.filter(function(e){return e}); 
+      // const filterArr = failedLogins.filter(function(e){return e}); 
   
-      return res.status(200).json({out: filterArr});
+      return res.status(200).json({out: failedLogins});
     });
 
   } else {
