@@ -394,7 +394,10 @@ app.post('/linux-fetch', (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
       }
   
-      const failedLogins = stdout.split('\n');
+      const failedLogins = stdout.split('\n').map((line) => {
+        const lineArr = line.split(' ');
+        return {date: `${lineArr[0]} ${lineArr[1]}`, time: lineArr[2], msg: lineArr.splice(2,-1).join(' ')}
+      });
       // console.log('RESULT: ',stdout.length);
       const filterArr = failedLogins.filter(function(e){return e}); 
   
