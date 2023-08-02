@@ -437,7 +437,7 @@ const con = mysql.createConnection({
   user: 'root',
   host: '172.104.174.187',
   password: 'password',
-  database: 'users',
+  database: 'mysql',
   insecureAuth : true,
   socketPath: '/var/run/mysqld/mysqld.sock'
 });
