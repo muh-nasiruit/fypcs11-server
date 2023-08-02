@@ -324,7 +324,7 @@ app.post('/linux-analysis', (req, res) => {
   console.log(check);
 
   const command1 = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $1, $2}' | sort | uniq -c | sort -rnk1";
-  const command2 = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $1, $2, $3}' | sort | uniq -c | sort -rnk1";
+  const command2 = "grep -E 'Failed password.*from ([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/auth.log | awk '{ print $3}' | sort | uniq -c | sort -rnk1";
   if (check === 0) {
     exec(command1, (error, stdout, stderr) => {
       if (error) {
