@@ -433,6 +433,51 @@ app.post('/linux-fetch', (req, res) => {
   }
 });
 
+const con = mysql.createConnection({
+  user: 'root',
+  host: '172.104.174.187',
+  password: 'password',
+  database: 'users',
+  insecureAuth : true,
+  socketPath: '/var/run/mysqld/mysqld.sock'
+});
+
+app.post('/mysql-visual', (req, res) => {
+    // Check if the connection is already established
+if (con.state === 'disconnected') {
+  con.connect((error) => {
+    if (error) {
+      console.log('Error on connect: ' + error.message);
+      res.status(500).send('Internal server error');
+      return;
+    }
+
+    console.log('Connection: Established sucessfully');
+  });
+}
+
+  const dBQuery = `SELECT command_type, COUNT(*) AS command_count
+  FROM general_log
+  GROUP BY command_type;`;
+
+  con.query(dBQuery, function (err, result) {
+    if (err) {
+        console.log('Error on query: ' + err.message);
+        res.status(500).send('Internal server error');
+        return;
+    }
+    // console.log("Query: Successful" + result.affectedRows);
+    console.log("Query: Successful! Count of Logs");
+    // User found, return the user object
+    console.log(result)
+    const foundObj = {
+      vu: result
+    }
+    // dont end connection here as next page also requires connection (edit later)
+    res.status(200).json(foundObj);
+  });
+})
+
 
 process.on('exit', () => {
   connection.end();
